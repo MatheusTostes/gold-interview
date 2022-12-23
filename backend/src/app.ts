@@ -1,9 +1,11 @@
 import express from "express";
 import contactsRoutes from "./routes/ContactRoutes";
+import userRoutes from "./routes/UserRoutes";
 import connection from "./db/config";
 import { json, urlencoded } from "body-parser";
+import "dotenv/config";
 
-const port = 8081;
+const port = process.env.PORT || 8081;
 const app = express();
 
 app.use(json());
@@ -15,6 +17,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/contacts", contactsRoutes);
+app.use("/users", userRoutes);
 
 app.use(
   (
