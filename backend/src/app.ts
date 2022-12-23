@@ -1,5 +1,5 @@
 import express from "express";
-import contactsRoutes from "./routes/contacts";
+import contactsRoutes from "./routes/ContactRoutes";
 import connection from "./db/config";
 import { json, urlencoded } from "body-parser";
 
