@@ -6,8 +6,22 @@ interface Contact {
   number: string;
 }
 
-const GetContactsService = async (): Promise<Contact[]> => {
-  const contact = await Contacts.findAll();
+interface IUser {
+  id: number;
+  name: string;
+  email: string;
+}
+
+interface Request {
+  user: IUser;
+}
+
+const GetContactsService = async ({ user }: Request): Promise<Contact[]> => {
+  const contact = await Contacts.findAll({
+    where: {
+      userId: user.id,
+    },
+  });
 
   return contact;
 };

@@ -34,7 +34,7 @@ export const updateContact: RequestHandler = async (req, res, next) => {
 
 export const deleteContact: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
-  const contact = await DeleteContactService({ id });
+  const contact = await DeleteContactService({ id, ...req.body });
 
   if (!contact) {
     return res.status(404).json({ message: "Contact not found" });
@@ -47,7 +47,7 @@ export const deleteContact: RequestHandler = async (req, res, next) => {
 
 export const getContactById: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
-  const contact = await GetContactByIdService({ id });
+  const contact = await GetContactByIdService({ id, ...req.body });
 
   if (!contact) {
     return res.status(404).json({ message: "Contact not found" });
@@ -59,7 +59,7 @@ export const getContactById: RequestHandler = async (req, res, next) => {
 };
 
 export const getContacts: RequestHandler = async (req, res, next) => {
-  const contacts = await GetContactsService();
+  const contacts = await GetContactsService({ ...req.body });
 
   return res
     .status(200)

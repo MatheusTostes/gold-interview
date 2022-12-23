@@ -5,6 +5,7 @@ interface Request {
   name: string;
   email: string;
   password: string;
+  user: User;
 }
 
 interface User {
@@ -19,10 +20,13 @@ const UpdateUserService = async ({
   name,
   email,
   password,
+  user,
 }: Request): Promise<User | null> => {
-  const user = await Users.findByPk(id);
+  const userObj = await Users.findOne({
+    where: { id: id, userId: user.id },
+  });
 
-  if (!user) {
+  if (!userObj) {
     return null;
   } else {
     const emailInUse = await Users.findOne({
@@ -35,13 +39,13 @@ const UpdateUserService = async ({
       return null;
     }
 
-    await user.update({
+    await userObj.update({
       name,
       email,
       password,
     });
 
-    return user;
+    return userObj;
   }
 };
 

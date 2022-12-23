@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import { Users } from "../models/UserModel";
 import { Contacts } from "../models/ContactModel";
 

@@ -4,8 +4,14 @@ interface Request {
   id: number;
   name: string;
   number: string;
+  user: IUser;
 }
 
+interface IUser {
+  id: number;
+  name: string;
+  email: string;
+}
 interface Contact {
   id: number;
   name: string;
@@ -16,8 +22,11 @@ const UpdateContactService = async ({
   id,
   name,
   number,
+  user,
 }: Request): Promise<Contact | null> => {
-  const contact = await Contacts.findByPk(id);
+  const contact = await Contacts.findOne({
+    where: { id: id, userId: user.id },
+  });
 
   if (!contact) {
     return null;

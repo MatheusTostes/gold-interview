@@ -24,6 +24,7 @@ const CreateContactService = async ({
 }: Request): Promise<Contact | null> => {
   const whereCondition = {
     number,
+    userId: user.id,
   };
   const contact = await Contacts.findOne({
     where: whereCondition,

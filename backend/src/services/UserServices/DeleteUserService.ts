@@ -2,6 +2,7 @@ import { Users } from "../../models/UserModel";
 
 interface Request {
   id: string;
+  user: User;
 }
 
 interface User {
@@ -13,15 +14,18 @@ interface User {
 
 const DeleteUserService = async ({
   id,
+  user,
 }: Request): Promise<User | null> => {
-  const user = await Users.findByPk(id);
+  const userObj = await Users.findOne({
+    where: { id: id, userId: user.id },
+  });
 
-  if (!user) {
+  if (!userObj) {
     return null;
   } else {
-    await user.destroy();
+    await userObj.destroy();
 
-    return user;
+    return userObj;
   }
 };
 

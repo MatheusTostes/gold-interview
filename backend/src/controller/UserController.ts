@@ -40,7 +40,7 @@ export const updateUser: RequestHandler = async (req, res, next) => {
 
 export const deleteUser: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
-  const user = await DeleteUserService({ id });
+  const user = await DeleteUserService({ id, ...req.body });
 
   if (!user) {
     return res.status(404).json({ message: "User not found" });
@@ -53,7 +53,7 @@ export const deleteUser: RequestHandler = async (req, res, next) => {
 
 export const getUserById: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
-  const user = await GetUserByIdService({ id });
+  const user = await GetUserByIdService({ id, ...req.body });
 
   if (!user) {
     return res.status(404).json({ message: "User not found" });
