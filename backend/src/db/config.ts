@@ -1,20 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
-import { Users } from "../models/UserModel";
-import { Contacts } from "../models/ContactModel";
-import "dotenv/config";
+import * as dbConfig from "./database";
 
-const connection = new Sequelize({
-  define: {
-    charset: "utf8mb4",
-    collate: "utf8mb4_bin",
-  },
-  dialect: "mysql",
-  host: "localhost",
-  username: "gold",
-  password: "gold",
-  database: "gold",
-  logging: false,
-  models: [Contacts, Users],
-});
+const connection = new Sequelize(dbConfig);
 
 export default connection;
