@@ -1,4 +1,4 @@
-import { Contacts } from "../../models/contacts";
+import { Contacts } from "../../models/ContactModel";
 
 interface Request {
   id: string;
