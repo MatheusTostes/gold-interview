@@ -1,4 +1,5 @@
-import { Table, Model, Column, DataType } from "sequelize-typescript";
+import { Table, Model, Column, DataType, HasMany } from "sequelize-typescript";
+import { Contacts } from "./ContactModel";
 
 @Table({
   timestamps: false,
@@ -30,4 +31,14 @@ export class Users extends Model {
     allowNull: false,
   })
   password!: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+    defaultValue: "user",
+  })
+  profile!: string;
+
+  @HasMany(() => Contacts)
+  contacts: Contacts[];
 }

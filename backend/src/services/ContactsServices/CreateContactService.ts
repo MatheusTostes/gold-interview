@@ -4,6 +4,11 @@ interface Request {
   id: number;
   name: string;
   number: string;
+  user: {
+    id: number;
+    name: string;
+    profile: string;
+  };
 }
 
 interface Contact {
@@ -13,9 +18,9 @@ interface Contact {
 }
 
 const CreateContactService = async ({
-  id,
   name,
   number,
+  user,
 }: Request): Promise<Contact | null> => {
   const whereCondition = {
     number,
@@ -30,6 +35,7 @@ const CreateContactService = async ({
     const contact = await Contacts.create({
       name,
       number,
+      userId: user.id,
     });
 
     return contact;
