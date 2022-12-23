@@ -1,4 +1,5 @@
 import { Router } from "express";
+import auth from "../middewares/auth";
 
 import {
   createContact,
@@ -10,10 +11,10 @@ import {
 
 const router = Router();
 
-router.post("/", createContact);
-router.put("/:id", updateContact);
-router.delete("/:id", deleteContact);
-router.get("/:id", getContactById);
-router.get("/", getContacts);
+router.post("/", auth, createContact);
+router.put("/:id", auth, updateContact);
+router.delete("/:id", auth, deleteContact);
+router.get("/:id", auth, getContactById);
+router.get("/", auth, getContacts);
 
 export default router;
