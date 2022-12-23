@@ -5,13 +5,14 @@ import userRoutes from "./routes/UserRoutes";
 import sessionRoutes from "./routes/SessionRoutes";
 import connection from "./db/config";
 import { json, urlencoded } from "body-parser";
+import cors from "cors";
 
 const port = process.env.PORT || 8081;
 const app = express();
 
 app.use(json());
-
 app.use(urlencoded({ extended: true })); //pesquisar
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
