@@ -12,22 +12,27 @@ interface Contact {
   number: string;
 }
 
-const CreateContactService = async ({
+const UpdateContactService = async ({
   id,
   name,
   number,
 }: Request): Promise<Contact | null> => {
-  const whereCondition = {
-    number,
-  };
-  const contact = await Contacts.findOne({
-    where: whereCondition,
-  });
+  const contact = await Contacts.findByPk(id);
 
-  if (contact) {
+  if (!contact) {
     return null;
   } else {
-    const contact = await Contacts.create({
+    const numberInUse = await Contacts.findOne({
+      where: {
+        number,
+      },
+    });
+
+    if (numberInUse) {
+      return null;
+    }
+
+    await contact.update({
       name,
       number,
     });
@@ -36,4 +41,4 @@ const CreateContactService = async ({
   }
 };
 
-export default CreateContactService;
+export default UpdateContactService;
