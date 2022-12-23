@@ -58,10 +58,10 @@ export const getContactById: RequestHandler = async (req, res, next) => {
     .json({ message: "Contact fetched successfully", data: contact });
 };
 
-export const getContactsService: RequestHandler = async (req, res, next) => {
-  const contact = await GetContactsService();
+export const getContacts: RequestHandler = async (req, res, next) => {
+  const contacts = await GetContactsService();
 
   return res
     .status(200)
-    .json({ message: "Contacts fetched successfully", data: contact });
+    .json({ message: "Contacts fetched successfully", data: contacts });
 };

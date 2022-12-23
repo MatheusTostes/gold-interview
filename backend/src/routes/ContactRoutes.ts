@@ -4,7 +4,7 @@ import {
   createContact,
   deleteContact,
   getContactById,
-  getContactsService,
+  getContacts,
   updateContact,
 } from "../controller/ContactsController";
 
@@ -14,6 +14,6 @@ router.post("/", createContact);
 router.put("/:id", updateContact);
 router.delete("/:id", deleteContact);
 router.get("/:id", getContactById);
-router.get("/", getContactsService);
+router.get("/", getContacts);
 
 export default router;
