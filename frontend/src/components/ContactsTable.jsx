@@ -29,7 +29,7 @@ export const ContactsTable = ({ contacts }) => {
     { id: "name", label: "Nome", minWidth: 170 },
     {
       id: "number",
-      label: "Número",
+      label: "Telefone",
       minWidth: 170,
     },
     {
@@ -43,7 +43,7 @@ export const ContactsTable = ({ contacts }) => {
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ maxHeight: "70vh" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -105,7 +105,7 @@ export const ContactsTable = ({ contacts }) => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        labelRowsPerPage="Linhas por página"
+        labelRowsPerPage="Exibir"
       />
     </Paper>
   );

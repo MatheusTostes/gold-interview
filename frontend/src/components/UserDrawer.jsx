@@ -67,6 +67,11 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
+const user = {
+  name: "João da Silva Sauro",
+  email: "joao_silva_sauro@hotmail.com",
+};
+
 export const UserDrawer = ({ childrenComponent }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -120,6 +125,7 @@ export const UserDrawer = ({ childrenComponent }) => {
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
+            boxShadow: "0 0 15px 5px rgba(0, 0, 0, 0.2)",
           },
         }}
         variant="persistent"
@@ -144,7 +150,7 @@ export const UserDrawer = ({ childrenComponent }) => {
           noWrap
           component="div"
         >
-          Matheus da Silva Sauro
+          {user.name}
         </Typography>
         <Typography
           sx={{
@@ -157,7 +163,7 @@ export const UserDrawer = ({ childrenComponent }) => {
           noWrap
           component="div"
         >
-          matheus_sauro@hotmail.com
+          {user.email}
         </Typography>
 
         <Divider />
