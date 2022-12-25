@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { Box, Container } from "@mui/system";
 import {
@@ -14,6 +15,8 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 export const Login = () => {
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -21,6 +24,7 @@ export const Login = () => {
       email: data.get("email"),
       password: data.get("password"),
     });
+    navigate("/contacts", { replace: true });
   };
 
   return (
