@@ -3,8 +3,6 @@ import { Request, Response, NextFunction } from "express";
 const userValid = (req: Request, res: Response, next: NextFunction): void => {
   const { name, email, password } = req.body;
 
-  console.log({ name, email, password });
-
   const emailFormat =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
