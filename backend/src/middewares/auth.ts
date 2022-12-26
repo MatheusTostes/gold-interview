@@ -23,7 +23,8 @@ const auth = (
     return;
   }
 
-  const [, token] = authorization.split(" ");
+  const token = authorization.replace("Bearer ", "");
+  // const [, token] = authorization.split(" ");
 
   try {
     const decoded = <IDecode>verify(token, process.env.JWT_SECRET || "secret");

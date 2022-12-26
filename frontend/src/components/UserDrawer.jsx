@@ -19,6 +19,7 @@ import ListItemText from "@mui/material/ListItemText";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Avatar } from "@mui/material";
 import ConfigIcon from "@mui/icons-material/Settings";
+import { AuthContext } from "../contexts/Auth/AuthContext";
 
 const drawerWidth = 240;
 
@@ -75,6 +76,7 @@ const user = {
 export const UserDrawer = ({ childrenComponent }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+  const { handleLogout } = React.useContext(AuthContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -82,6 +84,10 @@ export const UserDrawer = ({ childrenComponent }) => {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const logout = () => {
+    handleLogout();
   };
 
   return (
@@ -115,7 +121,7 @@ export const UserDrawer = ({ childrenComponent }) => {
               Contatos
             </Typography>
           </Box>
-          <LogoutIcon cursor="pointer" />
+          <LogoutIcon cursor="pointer" onClick={logout} />
         </Toolbar>
       </AppBar>
       <Drawer

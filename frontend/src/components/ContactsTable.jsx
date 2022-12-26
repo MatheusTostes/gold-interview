@@ -1,3 +1,5 @@
+import * as React from "react";
+
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -10,10 +12,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { useState } from "react";
+import { ConfirmationModal } from "./ConfirmationWaning";
 
-export const ContactsTable = ({ contacts }) => {
+export const ContactsTable = ({ contacts, handleContactModalOpen }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [confirmationModalOpen, setConfirmationModalOpen] =
+    React.useState(false);
+  const [contactObject, setContactObject] = React.useState({});
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -43,7 +49,13 @@ export const ContactsTable = ({ contacts }) => {
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: "70vh" }}>
+      <ConfirmationModal
+        confirmationModalOpen={confirmationModalOpen}
+        setConfirmationModalOpen={setConfirmationModalOpen}
+        contactObject={contactObject}
+        action="delete"
+      />
+      <TableContainer sx={{ maxHeight: "65vh" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -59,20 +71,24 @@ export const ContactsTable = ({ contacts }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {contacts.map((row, rowIndex) => {
+            {contacts?.map((contact, contactIndex) => {
               return (
                 <TableRow
                   hover
                   role="checkbox"
                   tabIndex={-1}
-                  key={`${rowIndex}-row`}
+                  key={`${contactIndex}-contact`}
                 >
-                  <TableCell key={`${rowIndex}-id`}>{row.id}</TableCell>
-                  <TableCell key={`${rowIndex}-name`}>{row.name}</TableCell>
-                  <TableCell key={`${rowIndex}-number`}>{row.number}</TableCell>
+                  <TableCell key={`${contactIndex}-id`}>{contact.id}</TableCell>
+                  <TableCell key={`${contactIndex}-name`}>
+                    {contact.name}
+                  </TableCell>
+                  <TableCell key={`${contactIndex}-number`}>
+                    {contact.number}
+                  </TableCell>
 
                   <TableCell
-                    key={`${rowIndex}-edit`}
+                    key={`${contactIndex}-edit`}
                     align="right"
                     sx={{
                       display: "flex",
@@ -80,11 +96,18 @@ export const ContactsTable = ({ contacts }) => {
                       gap: "0.5rem",
                     }}
                   >
-                    <DeleteIcon cursor="pointer" style={{ color: "#dc1471" }} />
+                    <DeleteIcon
+                      cursor="pointer"
+                      style={{ color: "#dc1471" }}
+                      onClick={() => {
+                        setContactObject(contact);
+                        setConfirmationModalOpen(true);
+                      }}
+                    />
                     <EditIcon
                       cursor="pointer"
                       color="primary"
-                      onClick={() => console.log("edit")}
+                      onClick={() => handleContactModalOpen(contact)}
                     />
                     <WhatsAppIcon
                       cursor="pointer"

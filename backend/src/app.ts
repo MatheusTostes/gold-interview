@@ -11,7 +11,7 @@ const port = process.env.PORT || 8081;
 const app = express();
 
 app.use(json());
-app.use(urlencoded({ extended: true })); //pesquisar
+app.use(urlencoded({ extended: true }));
 app.use(cors());
 
 app.get("/", (req, res) => {
