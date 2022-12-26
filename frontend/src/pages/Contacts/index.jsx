@@ -45,6 +45,8 @@ export const Contacts = () => {
     <>
       <Container>
         <ContactModal
+          contacts={contacts}
+          setContacts={setContacts}
           contactModalOpen={contactModalOpen}
           handleContactModalClose={handleContactModalClose}
           selectedContact={selectedContact}
@@ -62,6 +64,7 @@ export const Contacts = () => {
         </Button>
         <ContactsTable
           contacts={contacts}
+          setContacts={setContacts}
           handleContactModalOpen={handleContactModalOpen}
         />
       </Container>

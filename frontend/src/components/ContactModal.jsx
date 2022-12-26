@@ -3,7 +3,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Button, TextField } from "@mui/material";
-import { ConfirmationModal } from "./ConfirmationWaning";
+import { ConfirmationModal } from "./ConfirmationModal";
+import api from "../helpers/api";
 
 const style = {
   width: "90%",
@@ -23,6 +24,8 @@ export const ContactModal = ({
   handleContactModalClose,
   selectedContact,
   setSelectedContact,
+  contacts,
+  setContacts,
 }) => {
   const [confirmationModalOpen, setConfirmationModalOpen] =
     React.useState(false);
@@ -32,13 +35,25 @@ export const ContactModal = ({
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    setContactObject({
+    const dataContact = {
+      id: selectedContact?.id,
       name: data.get("name"),
-      phone: data.get("phone"),
-    });
+      number: data.get("phone"),
+    };
+
+    setContactObject(dataContact);
 
     if (selectedContact) {
       setConfirmationModalOpen(true);
+    }
+
+    if (!selectedContact) {
+      (async () => {
+        const {
+          data: { data },
+        } = await api.post("/contacts", dataContact);
+        setContacts([...contacts, data]);
+      })();
     }
 
     handleContactModalClose();
@@ -52,6 +67,8 @@ export const ContactModal = ({
         setConfirmationModalOpen={setConfirmationModalOpen}
         contactObject={contactObject}
         action="update"
+        contacts={contacts}
+        setContacts={setContacts}
       />
       <Modal
         open={contactModalOpen}
@@ -73,7 +90,11 @@ export const ContactModal = ({
             name="name"
             autoComplete="name"
             autoFocus
-            value={selectedContact?.name}
+            defaultValue={selectedContact?.name}
+            // value={""}
+            // onChange={(e) => {
+            //   setSelectedContact({ ...selectedContact, name: e.target.value });
+            // }}
           />
           <TextField
             margin="normal"
@@ -83,7 +104,14 @@ export const ContactModal = ({
             label="telefone"
             id="phone"
             autoComplete="current-phone"
-            value={selectedContact?.number}
+            defaultValue={selectedContact?.number}
+            // value={""}
+            // onChange={(e) => {
+            //   setSelectedContact({
+            //     ...selectedContact,
+            //     number: e.target.value,
+            //   });
+            // }}
           />
           <Button
             type="submit"

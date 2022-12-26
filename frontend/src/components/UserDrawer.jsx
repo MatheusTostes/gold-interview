@@ -68,15 +68,10 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-const user = {
-  name: "João da Silva Sauro",
-  email: "joao_silva_sauro@hotmail.com",
-};
-
 export const UserDrawer = ({ childrenComponent }) => {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
-  const { handleLogout } = React.useContext(AuthContext);
+  const [open, setOpen] = React.useState(false);
+  const { handleLogout, user } = React.useContext(AuthContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -156,7 +151,7 @@ export const UserDrawer = ({ childrenComponent }) => {
           noWrap
           component="div"
         >
-          {user.name}
+          {user?.name}
         </Typography>
         <Typography
           sx={{
@@ -169,7 +164,7 @@ export const UserDrawer = ({ childrenComponent }) => {
           noWrap
           component="div"
         >
-          {user.email}
+          {user?.email}
         </Typography>
 
         <Divider />
@@ -177,7 +172,7 @@ export const UserDrawer = ({ childrenComponent }) => {
         <List>
           {["Editar perfil"].map((text, index) => (
             <ListItem key={text} disablePadding>
-              <ListItemButton>
+              <ListItemButton disabled>
                 <ListItemIcon>
                   <ConfigIcon />
                 </ListItemIcon>

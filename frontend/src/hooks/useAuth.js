@@ -41,18 +41,20 @@ const useAuth = () => {
     setLoading(true);
 
     const userInfo = JSON.parse(localStorage.getItem('user'));
+
     const token = JSON.parse(localStorage.getItem('token'));
-    const { name, role, email } = userInfo || {};
+    const { name, profile, email } = userInfo || {};
 
     (
       async () => {
-        if (token && name && role && email) {
+        if (token && name && profile && email) {
           try {
             // verificar se o token é válido
             // await api.get('/customer/products');
             api.defaults.headers.Authorization = `${token}`;
             await api.get('/contacts');
-            setUser({ name, role, email });
+
+            setUser({ name, email, profile });
             setIsAuth(true);
             setLoading(false);
           } catch (err) {
@@ -83,7 +85,7 @@ const useAuth = () => {
 
       if (!data.message) {
         api.defaults.headers.Authorization = `${data.token}`;
-        setUser(data);
+        setUser(data.user);
         setIsAuth(true);
 
         if (data.user.profile === 'user') {

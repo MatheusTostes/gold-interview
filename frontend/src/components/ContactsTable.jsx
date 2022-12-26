@@ -12,9 +12,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { useState } from "react";
-import { ConfirmationModal } from "./ConfirmationWaning";
+import { ConfirmationModal } from "./ConfirmationModal";
 
-export const ContactsTable = ({ contacts, handleContactModalOpen }) => {
+export const ContactsTable = ({
+  contacts,
+  handleContactModalOpen,
+  setContacts,
+}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [confirmationModalOpen, setConfirmationModalOpen] =
@@ -54,6 +58,8 @@ export const ContactsTable = ({ contacts, handleContactModalOpen }) => {
         setConfirmationModalOpen={setConfirmationModalOpen}
         contactObject={contactObject}
         action="delete"
+        contacts={contacts}
+        setContacts={setContacts}
       />
       <TableContainer sx={{ maxHeight: "65vh" }}>
         <Table stickyHeader aria-label="sticky table">
