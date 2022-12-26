@@ -17,6 +17,11 @@ interface Contact {
   id: number;
   name: string;
   number: string;
+  message?: string;
+}
+
+interface ErrorMessage {
+  message: string;
 }
 
 const UpdateContactService = async ({
@@ -24,13 +29,13 @@ const UpdateContactService = async ({
   name,
   number,
   user,
-}: Request): Promise<Contact | null> => {
+}: Request): Promise<Contact | ErrorMessage> => {
   const contact = await Contacts.findOne({
     where: { id: id, userId: user.id },
   });
 
   if (!contact) {
-    return null;
+    return { message: "Contact not found" };
   } else {
     const numberInUse = await Contacts.findOne({
       where: {
@@ -43,7 +48,7 @@ const UpdateContactService = async ({
     });
 
     if (numberInUse) {
-      return null;
+      return { message: "Number already in use" };
     }
 
     await contact.update({

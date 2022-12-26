@@ -8,8 +8,8 @@ import GetContactsService from "../services/ContactsServices/GetContactsService"
 export const createContact: RequestHandler = async (req, res, next) => {
   const contact = await CreateContactService({ ...req.body });
 
-  if (!contact) {
-    return res.status(409).json({ message: "Contact already exists" });
+  if (contact?.message === "Number already in use") {
+    return res.status(404).json({ message: "Number already in use" });
   }
 
   return res
@@ -21,10 +21,10 @@ export const updateContact: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
   const contact = await UpdateContactService({ id, ...req.body });
 
-  if (!contact) {
-    return res
-      .status(404)
-      .json({ message: "Contact not found or number already in use" });
+  if (contact?.message === "Contact not found") {
+    return res.status(404).json({ message: "Contact not found" });
+  } else if (contact?.message === "Number already in use") {
+    return res.status(404).json({ message: "Number already in use" });
   }
 
   return res
@@ -36,7 +36,7 @@ export const deleteContact: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
   const contact = await DeleteContactService({ id, ...req.body });
 
-  if (!contact) {
+  if (contact?.message === "Contact not found") {
     return res.status(404).json({ message: "Contact not found" });
   }
 

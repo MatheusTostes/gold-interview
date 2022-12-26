@@ -15,13 +15,18 @@ interface Contact {
   id: number;
   name: string;
   number: string;
+  message?: string;
+}
+
+interface ErrorMessage {
+  message: string;
 }
 
 const CreateContactService = async ({
   name,
   number,
   user,
-}: Request): Promise<Contact | null> => {
+}: Request): Promise<Contact | ErrorMessage> => {
   const whereCondition = {
     number,
     userId: user.id,
@@ -31,7 +36,7 @@ const CreateContactService = async ({
   });
 
   if (contact) {
-    return null;
+    return { message: "Number already in use" };
   } else {
     const contact = await Contacts.create({
       name,
