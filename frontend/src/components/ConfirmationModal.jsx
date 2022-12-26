@@ -26,28 +26,48 @@ export const ConfirmationModal = ({
   action,
   contacts,
   setContacts,
+  setNameError,
+  setPhoneError,
+  setSelectedContact,
+  handleContactModalClose,
 }) => {
   const handleSubmit = () => {
     setConfirmationModalOpen(false);
 
     if (action === "update") {
       (async () => {
-        const {
-          data: { data },
-        } = await api.put(`/contacts/${contactObject.id}`, contactObject);
+        try {
+          const {
+            data: { data },
+          } = await api.put(`/contacts/${contactObject.id}`, contactObject);
 
-        const contactIndex = contacts.findIndex((obj) => obj.id === data.id);
-        contacts[contactIndex] = data;
+          const contactIndex = contacts.findIndex((obj) => obj.id === data.id);
+          contacts[contactIndex] = data;
 
-        setContacts([...contacts]);
+          setContacts([...contacts]);
+          setSelectedContact(null);
+          handleContactModalClose();
+        } catch (error) {
+          if (error.response.data.message.includes("name")) setNameError(true);
+          if (
+            error.response.data.message.includes("Number") ||
+            error.response.data.message.includes("number")
+          )
+            setPhoneError(true);
+          console.log(error.response.data.message);
+        }
       })();
     } else if (action === "delete") {
       (async () => {
-        const {
-          data: { data },
-        } = await api.delete(`/contacts/${contactObject.id}`);
+        try {
+          const {
+            data: { data },
+          } = await api.delete(`/contacts/${contactObject.id}`);
 
-        setContacts([...contacts.filter((c) => c.id !== data.id)]);
+          setContacts([...contacts.filter((c) => c.id !== data.id)]);
+        } catch (error) {
+          console.log(error.response.data.message);
+        }
       })();
     }
   };

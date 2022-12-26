@@ -30,6 +30,8 @@ export const ContactModal = ({
   const [confirmationModalOpen, setConfirmationModalOpen] =
     React.useState(false);
   const [contactObject, setContactObject] = React.useState({});
+  const [nameError, setNameError] = React.useState(false);
+  const [phoneError, setPhoneError] = React.useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -49,15 +51,23 @@ export const ContactModal = ({
 
     if (!selectedContact) {
       (async () => {
-        const {
-          data: { data },
-        } = await api.post("/contacts", dataContact);
-        setContacts([...contacts, data]);
+        try {
+          const {
+            data: { data },
+          } = await api.post("/contacts", dataContact);
+          setContacts([...contacts, data]);
+          handleContactModalClose();
+        } catch (error) {
+          if (error.response.data.message.includes("name")) setNameError(true);
+          if (
+            error.response.data.message.includes("Number") ||
+            error.response.data.message.includes("number")
+          )
+            setPhoneError(true);
+          console.log(error.response.data.message);
+        }
       })();
     }
-
-    handleContactModalClose();
-    setSelectedContact(null);
   };
 
   return (
@@ -69,6 +79,10 @@ export const ContactModal = ({
         action="update"
         contacts={contacts}
         setContacts={setContacts}
+        setNameError={setNameError}
+        setPhoneError={setPhoneError}
+        setSelectedContact={setSelectedContact}
+        handleContactModalClose={handleContactModalClose}
       />
       <Modal
         open={contactModalOpen}
@@ -91,11 +105,21 @@ export const ContactModal = ({
             autoComplete="name"
             autoFocus
             defaultValue={selectedContact?.name}
-            // value={""}
-            // onChange={(e) => {
-            //   setSelectedContact({ ...selectedContact, name: e.target.value });
-            // }}
+            onChange={() => setNameError(false)}
           />
+
+          {nameError && (
+            <Typography
+              style={{
+                color: "#dc1471",
+                fontSize: 11,
+                marginLeft: 10,
+              }}
+            >
+              Nome inválido
+            </Typography>
+          )}
+
           <TextField
             margin="normal"
             required
@@ -105,14 +129,21 @@ export const ContactModal = ({
             id="phone"
             autoComplete="current-phone"
             defaultValue={selectedContact?.number}
-            // value={""}
-            // onChange={(e) => {
-            //   setSelectedContact({
-            //     ...selectedContact,
-            //     number: e.target.value,
-            //   });
-            // }}
+            onChange={() => setPhoneError(false)}
           />
+
+          {phoneError && (
+            <Typography
+              style={{
+                color: "#dc1471",
+                fontSize: 11,
+                marginLeft: 10,
+              }}
+            >
+              Número inválido
+            </Typography>
+          )}
+
           <Button
             type="submit"
             fullWidth

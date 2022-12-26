@@ -169,7 +169,7 @@ export const UserDrawer = ({ childrenComponent }) => {
 
         <Divider />
 
-        <List>
+        <List sx={{ position: "absolute", bottom: 0 }}>
           {["Editar perfil"].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton disabled>

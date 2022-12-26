@@ -15,22 +15,37 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { AuthContext } from "../../contexts/Auth/AuthContext";
 
-export const Login = () => {
-  const { handleLogin } = React.useContext(AuthContext);
-  const [loginError, setLoginError] = React.useState(false);
+export const Register = () => {
+  const { handleRegister } = React.useContext(AuthContext);
+  const [nameError, setNameError] = React.useState(false);
+  const [emailError, setEmailError] = React.useState(false);
+  const [emailInUseError, setEmailInUseError] = React.useState(false);
+  const [passwordError, setPasswordError] = React.useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
     const userData = {
+      name: data.get("name"),
       email: data.get("email"),
       password: data.get("password"),
     };
-    const response = await handleLogin(userData);
 
-    if (response === "error") {
-      setLoginError(true);
+    const response = await handleRegister(userData);
+
+    console.log(response.response.data.message);
+
+    if (response.response.data.message === "Email already in use") {
+      setEmailInUseError(true);
+    } else if (response.response.data.message === "Invalid email") {
+      setEmailError(true);
+    } else if (
+      response.response.data.message === "Password length must be 6 or higher"
+    ) {
+      setPasswordError(true);
+    } else if (response.response.data.message === "Invalid name") {
+      setNameError(true);
     }
   };
 
@@ -49,9 +64,20 @@ export const Login = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Acesse sua conta
+          Cadastre sua conta
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="name"
+            label="nome"
+            name="name"
+            autoComplete="name"
+            autoFocus
+            onChange={() => setNameError(false)}
+          />
           <TextField
             margin="normal"
             required
@@ -61,7 +87,10 @@ export const Login = () => {
             name="email"
             autoComplete="email"
             autoFocus
-            onChange={() => setLoginError(false)}
+            onChange={() => {
+              setEmailError(false);
+              setEmailInUseError(false);
+            }}
           />
           <TextField
             margin="normal"
@@ -72,10 +101,10 @@ export const Login = () => {
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={() => setLoginError(false)}
+            onChange={() => setPasswordError(false)}
           />
 
-          {loginError && (
+          {nameError && (
             <Typography
               style={{
                 color: "#dc1471",
@@ -83,7 +112,43 @@ export const Login = () => {
                 marginLeft: 10,
               }}
             >
-              Usuário ou senha inválidos
+              Insira um nome válido
+            </Typography>
+          )}
+
+          {emailError && (
+            <Typography
+              style={{
+                color: "#dc1471",
+                fontSize: 11,
+                marginLeft: 10,
+              }}
+            >
+              Insira um e-mail válido
+            </Typography>
+          )}
+
+          {emailInUseError && (
+            <Typography
+              style={{
+                color: "#dc1471",
+                fontSize: 11,
+                marginLeft: 10,
+              }}
+            >
+              E-mail ja cadastrado
+            </Typography>
+          )}
+
+          {passwordError && (
+            <Typography
+              style={{
+                color: "#dc1471",
+                fontSize: 11,
+                marginLeft: 10,
+              }}
+            >
+              Insira uma senha válida
             </Typography>
           )}
 
@@ -101,14 +166,9 @@ export const Login = () => {
             Entrar
           </Button>
           <Grid container>
-            {/* <Grid item xs>
-              <Link href="#" variant="body2">
-                Esqueci minha senha
-              </Link>
-            </Grid> */}
             <Grid item>
-              <Link href="/register" variant="body2">
-                {"Não tem conta? Cadastre-se"}
+              <Link href="/login" variant="body2">
+                {"Já possui conta? Conecte-se"}
               </Link>
             </Grid>
           </Grid>

@@ -8,11 +8,12 @@ import {
   getContacts,
   updateContact,
 } from "../controller/ContactsController";
+import contactValid from "../middewares/contactValid";
 
 const router = Router();
 
-router.post("/", auth, createContact);
-router.put("/:id", auth, updateContact);
+router.post("/", auth, contactValid, createContact);
+router.put("/:id", auth, contactValid, updateContact);
 router.delete("/:id", auth, deleteContact);
 router.get("/:id", auth, getContactById);
 router.get("/", auth, getContacts);

@@ -8,11 +8,12 @@ import {
   getUsers,
   updateUser,
 } from "../controller/UserController";
+import userValid from "../middewares/userValid";
 
 const router = Router();
 
-router.post("/", createUser);
-router.put("/:id", auth, updateUser);
+router.post("/", userValid, createUser);
+router.put("/:id", auth, userValid, updateUser);
 router.delete("/:id", auth, deleteUser);
 router.get("/:id", auth, getUserById);
 router.get("/", auth, getUsers);

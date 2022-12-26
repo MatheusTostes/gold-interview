@@ -75,8 +75,6 @@ const useAuth = () => {
   const handleLogin = async (userData) => {
     setLoading(true);
 
-
-
     try {
       const { data: { data } } = await api.post('/login/signin', userData);
 
@@ -95,10 +93,10 @@ const useAuth = () => {
         }
       }
       setLoading(false);
-      return 'error';
     } catch (err) {
       console.log(err);
       setLoading(false);
+      return 'error';
     }
   };
 
@@ -120,7 +118,7 @@ const useAuth = () => {
     }
   };
 
-  const handleRegister = async ({ userData }) => {
+  const handleRegister = async (userData) => {
     setLoading(true);
 
     try {
@@ -135,13 +133,14 @@ const useAuth = () => {
         api.defaults.headers.Authorization = `${data.token}`;
         setUser(data.user);
         setIsAuth(true);
-        navigate('/customer/products');
+        navigate('/contacts');
       }
       setLoading(false);
-      return 'Ja existe';
-    } catch (err) {
-      console.log(err);
+      // return 'error';
+    } catch (error) {
+      console.log(error);
       setLoading(false);
+      return error;
     }
   };
 
