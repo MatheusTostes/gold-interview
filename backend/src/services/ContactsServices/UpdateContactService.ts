@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { Contacts } from "../../models/ContactModel";
 
 interface Request {
@@ -34,6 +35,10 @@ const UpdateContactService = async ({
     const numberInUse = await Contacts.findOne({
       where: {
         number,
+        userId: user.id,
+        id: {
+          [Op.ne]: id,
+        },
       },
     });
 
