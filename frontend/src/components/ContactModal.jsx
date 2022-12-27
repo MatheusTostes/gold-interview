@@ -32,6 +32,14 @@ export const ContactModal = ({
   const [contactObject, setContactObject] = React.useState({});
   const [nameError, setNameError] = React.useState(false);
   const [phoneError, setPhoneError] = React.useState(false);
+  const [phoneInUseError, setPhoneInUseError] = React.useState(false);
+
+  const handleResetStates = () => {
+    setNameError(false);
+    setPhoneError(false);
+    setPhoneInUseError(false);
+    handleContactModalClose();
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -56,14 +64,14 @@ export const ContactModal = ({
             data: { data },
           } = await api.post("/contacts", dataContact);
           setContacts([...contacts, data]);
-          handleContactModalClose();
+          // handleContactModalClose();
+          handleResetStates();
         } catch (error) {
           if (error.response.data.message.includes("name")) setNameError(true);
-          if (
-            error.response.data.message.includes("Number") ||
-            error.response.data.message.includes("number")
-          )
+          if (error.response.data.message.includes("Invalid number"))
             setPhoneError(true);
+          if (error.response.data.message.includes("Number already in use"))
+            setPhoneInUseError(true);
           console.log(error.response.data.message);
         }
       })();
@@ -83,10 +91,11 @@ export const ContactModal = ({
         setPhoneError={setPhoneError}
         setSelectedContact={setSelectedContact}
         handleContactModalClose={handleContactModalClose}
+        setPhoneInUseError={setPhoneInUseError}
       />
       <Modal
         open={contactModalOpen}
-        onClose={handleContactModalClose}
+        onClose={handleResetStates}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -129,7 +138,10 @@ export const ContactModal = ({
             id="phone"
             autoComplete="current-phone"
             defaultValue={selectedContact?.number}
-            onChange={() => setPhoneError(false)}
+            onChange={() => {
+              setPhoneError(false);
+              setPhoneInUseError(false);
+            }}
           />
 
           {phoneError && (
@@ -141,6 +153,18 @@ export const ContactModal = ({
               }}
             >
               Número inválido
+            </Typography>
+          )}
+
+          {phoneInUseError && (
+            <Typography
+              style={{
+                color: "#dc1471",
+                fontSize: 11,
+                marginLeft: 10,
+              }}
+            >
+              Número já cadastrado
             </Typography>
           )}
 

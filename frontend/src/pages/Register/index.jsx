@@ -148,7 +148,7 @@ export const Register = () => {
                 marginLeft: 10,
               }}
             >
-              Insira uma senha válida
+              Insira uma senha de 6 caracteres ou mais
             </Typography>
           )}
 
@@ -163,7 +163,7 @@ export const Register = () => {
             sx={{ mt: 3, mb: 2 }}
             color="primary"
           >
-            Entrar
+            Cadastrar
           </Button>
           <Grid container>
             <Grid item>

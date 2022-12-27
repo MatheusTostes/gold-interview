@@ -30,6 +30,7 @@ export const ConfirmationModal = ({
   setPhoneError,
   setSelectedContact,
   handleContactModalClose,
+  setPhoneInUseError,
 }) => {
   const handleSubmit = () => {
     setConfirmationModalOpen(false);
@@ -49,11 +50,10 @@ export const ConfirmationModal = ({
           handleContactModalClose();
         } catch (error) {
           if (error.response.data.message.includes("name")) setNameError(true);
-          if (
-            error.response.data.message.includes("Number") ||
-            error.response.data.message.includes("number")
-          )
+          if (error.response.data.message.includes("Invalid number"))
             setPhoneError(true);
+          if (error.response.data.message.includes("Number already in use"))
+            setPhoneInUseError(true);
           console.log(error.response.data.message);
         }
       })();

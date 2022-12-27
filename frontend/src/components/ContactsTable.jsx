@@ -115,10 +115,17 @@ export const ContactsTable = ({
                       color="primary"
                       onClick={() => handleContactModalOpen(contact)}
                     />
-                    <WhatsAppIcon
-                      cursor="pointer"
-                      style={{ color: "#25D366" }}
-                    />
+
+                    <a
+                      href={`https://api.whatsapp.com/send?phone=55${contact.number}&text=Olá!`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <WhatsAppIcon
+                        cursor="pointer"
+                        style={{ color: "#25D366" }}
+                      />
+                    </a>
                   </TableCell>
                 </TableRow>
               );

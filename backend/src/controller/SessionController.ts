@@ -6,7 +6,7 @@ export const generateToken: RequestHandler = async (req, res, next) => {
     ...req.body,
   });
 
-  if (!response?.token) {
+  if (!response || !response?.user || !response?.token) {
     return res.status(409).json({ message: "Incorrect email or password" });
   }
 
