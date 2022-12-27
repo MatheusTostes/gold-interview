@@ -14,9 +14,8 @@ const contactValid = (
   if (
     !number ||
     number === "" ||
-    number.length < 12 ||
-    number.length > 13 ||
-    !Number(number)
+    !Number(number) ||
+    (number.includes("55") && (number?.length < 12 || number?.length > 13))
   ) {
     res.status(400).json({ message: "Invalid number" });
     return;

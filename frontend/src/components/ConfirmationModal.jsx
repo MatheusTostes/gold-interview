@@ -54,7 +54,6 @@ export const ConfirmationModal = ({
             setPhoneError(true);
           if (error.response.data.message.includes("Number already in use"))
             setPhoneInUseError(true);
-          console.log(error.response.data.message);
         }
       })();
     } else if (action === "delete") {

@@ -40,17 +40,20 @@ export const ContactModal = ({
   const [nameError, setNameError] = React.useState(false);
   const [phoneError, setPhoneError] = React.useState(false);
   const [phoneInUseError, setPhoneInUseError] = React.useState(false);
-  const [phoneNumber, setPhoneNumber] = React.useState("+55");
+  const [phoneNumber, setPhoneNumber] = React.useState("55");
 
   const handleResetStates = () => {
     setNameError(false);
     setPhoneError(false);
     setPhoneInUseError(false);
     handleContactModalClose();
+    setPhoneNumber("+55");
   };
 
   useEffect(() => {
-    setPhoneNumber(selectedContact?.number);
+    if (selectedContact?.number) {
+      setPhoneNumber(selectedContact?.number);
+    }
   }, [selectedContact]);
 
   const handleSubmit = (event) => {
@@ -63,6 +66,20 @@ export const ContactModal = ({
       // number: data.get("phone"),
       number: phoneNumber,
     };
+
+    if (dataContact.name === "") {
+      setNameError(true);
+      return;
+    } else if (
+      !dataContact?.number ||
+      (dataContact?.number.includes("55") &&
+        (dataContact?.number === "" ||
+          dataContact?.number?.length < 12 ||
+          dataContact?.number?.length > 13))
+    ) {
+      setPhoneError(true);
+      return;
+    }
 
     setContactObject(dataContact);
 
@@ -85,7 +102,6 @@ export const ContactModal = ({
             setPhoneError(true);
           if (error.response.data.message.includes("Number already in use"))
             setPhoneInUseError(true);
-          console.log(error.response.data.message);
         }
       })();
     }
