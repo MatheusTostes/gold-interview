@@ -5,6 +5,13 @@ import Modal from "@mui/material/Modal";
 import { Button, TextField } from "@mui/material";
 import { ConfirmationModal } from "./ConfirmationModal";
 import api from "../helpers/api";
+// import { MuiTelInput } from "mui-tel-input";
+
+// import "react-phone-number-input/style.css";
+// import PhoneInput from "react-phone-number-input";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { useEffect } from "react";
 
 const style = {
   width: "90%",
@@ -33,6 +40,7 @@ export const ContactModal = ({
   const [nameError, setNameError] = React.useState(false);
   const [phoneError, setPhoneError] = React.useState(false);
   const [phoneInUseError, setPhoneInUseError] = React.useState(false);
+  const [phoneNumber, setPhoneNumber] = React.useState("+55");
 
   const handleResetStates = () => {
     setNameError(false);
@@ -41,6 +49,10 @@ export const ContactModal = ({
     handleContactModalClose();
   };
 
+  useEffect(() => {
+    setPhoneNumber(selectedContact?.number);
+  }, [selectedContact]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -48,7 +60,8 @@ export const ContactModal = ({
     const dataContact = {
       id: selectedContact?.id,
       name: data.get("name"),
-      number: data.get("phone"),
+      // number: data.get("phone"),
+      number: phoneNumber,
     };
 
     setContactObject(dataContact);
@@ -129,7 +142,7 @@ export const ContactModal = ({
             </Typography>
           )}
 
-          <TextField
+          {/* <TextField
             margin="normal"
             required
             fullWidth
@@ -142,6 +155,23 @@ export const ContactModal = ({
               setPhoneError(false);
               setPhoneInUseError(false);
             }}
+          /> */}
+
+          <PhoneInput
+            // style={{ height: "100px" }}
+            inputStyle={{
+              height: "55px",
+              width: "100%",
+              border: "1px solid #aeb3b9",
+              padding: "16.5px 14px 16.5px 50px",
+              borderRadius: "4px",
+              fontSize: "17px",
+              fontWeight: "500",
+            }}
+            country={"BR"}
+            placeholder="telefone *"
+            value={phoneNumber}
+            onChange={setPhoneNumber}
           />
 
           {phoneError && (
