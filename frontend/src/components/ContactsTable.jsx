@@ -14,6 +14,9 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { useState } from "react";
 import { ConfirmationModal } from "./ConfirmationModal";
 
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+
 export const ContactsTable = ({
   contacts,
   handleContactModalOpen,
@@ -89,8 +92,27 @@ export const ContactsTable = ({
                   <TableCell key={`${contactIndex}-name`}>
                     {contact.name}
                   </TableCell>
-                  <TableCell key={`${contactIndex}-number`}>
+                  {/* <TableCell key={`${contactIndex}-number`}>
                     {contact.number}
+                  </TableCell> */}
+                  <TableCell key={`${contactIndex}-number`}>
+                    <PhoneInput
+                      buttonStyle={{
+                        border: "none",
+                        background: "transparent",
+                      }}
+                      inputStyle={{
+                        background: "transparent",
+                        border: "none",
+                        fontSize: "12px",
+                        fontWeight: "500",
+                      }}
+                      country={"BR"}
+                      countryCodeEditable={false}
+                      placeholder="telefone *"
+                      value={contact.number}
+                      disabled
+                    />
                   </TableCell>
 
                   <TableCell
